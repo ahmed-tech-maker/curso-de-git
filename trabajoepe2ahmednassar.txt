@@ -1,0 +1,188 @@
+
+// Definición del package, proporciona un espacio de nombres para las clases
+package com.tuempresa.epe2;
+
+// Importa la clase Scanner del paquete java.util para leer la entrada del usuario
+import java.util.Scanner;
+
+// Definición de la clase principal
+public class EPE2_AHMED_NASSAR {
+    
+    // Método principal, es el punto de entrada de la aplicación
+    public static void main(String[] args) {
+        // Imprime un saludo al usuario
+        System.out.println("¡Bienvenido a la aplicación EPE2_AHMED_NASSAR!");
+
+        // Crear un arreglo para almacenar los datos del cliente y la empresa
+        String[] datosEmpresa = new String[7];
+        
+        // Crear un objeto Scanner para leer la entrada del usuario desde la consola
+        Scanner scanner = new Scanner(System.in);
+
+        // Llenar el arreglo con los datos ingresados por el usuario
+        System.out.println("Ingrese el nombre del cliente:");
+        datosEmpresa[0] = scanner.nextLine();
+
+        System.out.println("Ingrese los apellidos del cliente:");
+        datosEmpresa[1] = scanner.nextLine();
+
+        System.out.println("Ingrese la edad del cliente:");
+        datosEmpresa[2] = scanner.nextLine();
+
+        System.out.println("Ingrese el RUT del cliente:");
+        datosEmpresa[3] = scanner.nextLine();
+
+        System.out.println("Ingrese el nombre de la empresa:");
+        datosEmpresa[4] = scanner.nextLine();
+
+        System.out.println("Ingrese el RUT de la empresa:");
+        datosEmpresa[5] = scanner.nextLine();
+
+        System.out.println("Ingrese el giro de la empresa:");
+        datosEmpresa[6] = scanner.nextLine();
+
+        // Ingresar datos de ventas
+        System.out.println("Ingrese el total de ventas:");
+        int totalVentas = scanner.nextInt();
+
+        System.out.println("Ingrese el monto en dinero de las ventas hechas:");
+        double montoVentas = scanner.nextDouble();
+
+        // Calcular y guardar el monto en IVA a pagar
+        double montoIVA = calcularIVA(montoVentas);
+
+        // Calcular y guardar el monto de utilidades
+        double montoUtilidades = calcularUtilidades(montoVentas, montoIVA);
+
+        // Mostrar los resultados
+        System.out.println("Monto IVA a pagar: " + montoIVA);
+        System.out.println("Monto de utilidades: " + montoUtilidades);
+
+        // Cerrar el scanner para evitar posibles fugas de recursos
+        scanner.close();
+    }
+
+    // Método para calcular el IVA
+    public static double calcularIVA(double montoVentas) {
+        double porcentajeIVA = 0.19; // Puedes ajustar el porcentaje según la legislación local
+        return montoVentas * porcentajeIVA;
+    }
+
+    // Método para calcular las utilidades
+    public static double calcularUtilidades(double montoVentas, double montoIVA) {
+        return montoVentas - montoIVA;
+    }
+}
+---------------------------------------------------------------------------------------------
+import java.util.Scanner;
+
+// Clase principal que gestiona la entrada de datos y las operaciones entre las clases
+public class Main {
+    public static void main(String[] args) {
+        // Crear un objeto de la clase Ventas
+        Ventas ventas = new Ventas();
+
+        // Ingresar datos de la factura desde la consola
+        ventas.ingresarDatosDesdeConsola();
+
+        // Validar y solicitar datos hasta que estén completos
+        while (!ventas.datosCompletos()) {
+            System.out.println("Faltan datos de la factura, por favor ingrese la información restante.");
+            ventas.ingresarDatosDesdeConsola();
+        }
+
+        // Realizar otras operaciones según sea necesario
+        ventas.calcularIVA();
+        ventas.calcularUtilidades();
+
+        // Mostrar resultados
+        System.out.println("Monto IVA a pagar: " + ventas.getMontoIVA());
+        System.out.println("Monto de utilidades: " + ventas.getMontoUtilidades());
+    }
+}
+
+// Clase padre que almacena y opera con los datos de la factura
+class DatosFactura {
+    protected String nombreCliente;
+    protected String apellidosCliente;
+    protected int edadCliente;
+    protected String rutCliente;
+    protected String nombreEmpresa;
+    protected String rutEmpresa;
+    protected String giroEmpresa;
+
+    // Constructor
+    public DatosFactura() {
+        // Puedes inicializar aquí otros valores predeterminados si es necesario
+    }
+
+    // Método para validar que todos los campos contengan información
+    public boolean datosCompletos() {
+        return nombreCliente != null && !nombreCliente.isEmpty() &&
+               apellidosCliente != null && !apellidosCliente.isEmpty() &&
+               edadCliente > 0 &&
+               rutCliente != null && !rutCliente.isEmpty() &&
+               nombreEmpresa != null && !nombreEmpresa.isEmpty() &&
+               rutEmpresa != null && !rutEmpresa.isEmpty() &&
+               giroEmpresa != null && !giroEmpresa.isEmpty();
+    }
+
+    // Otros métodos y operaciones relacionados con los datos de la factura
+}
+
+// Clase hija que almacena y opera con los datos de ventas, IVA, montos, etc.
+class Ventas extends DatosFactura {
+    private int totalVentas;
+    private double montoVentas;
+    private double montoIVA;
+    private double montoUtilidades;
+
+    // Constructor
+    public Ventas() {
+        // Puedes inicializar aquí otros valores predeterminados si es necesario
+    }
+
+    // Método para ingresar datos de la factura desde la consola
+    public void ingresarDatosDesdeConsola() {
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.println("Ingrese el nombre del cliente:");
+        nombreCliente = scanner.nextLine();
+
+        System.out.println("Ingrese los apellidos del cliente:");
+        apellidosCliente = scanner.nextLine();
+
+        System.out.println("Ingrese la edad del cliente:");
+        edadCliente = scanner.nextInt();
+
+        // Solicitar y asignar los demás datos
+
+        scanner.close();
+    }
+
+    // Método para validar que los datos de ventas estén completos
+    public boolean datosCompletos() {
+        return super.datosCompletos() &&
+               totalVentas > 0 && montoVentas > 0;
+    }
+
+    // Método para calcular el IVA
+    public void calcularIVA() {
+        double porcentajeIVA = 0.19; // Puedes ajustar el porcentaje según la legislación local
+        montoIVA = montoVentas * porcentajeIVA;
+    }
+
+    // Método para calcular las utilidades
+    public void calcularUtilidades() {
+        montoUtilidades = montoVentas - montoIVA;
+    }
+
+    // Métodos para obtener los resultados
+    public double getMontoIVA() {
+        return montoIVA;
+    }
+
+    public double getMontoUtilidades() {
+        return montoUtilidades;
+    }
+}
