@@ -1,0 +1,253 @@
+1-
+
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+public class InterfazInicio {
+
+    public static void main(String[] args) {
+        // Crear y configurar la ventana principal
+        JFrame ventana = new JFrame("Inicio");
+        ventana.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        ventana.setSize(400, 300);
+        ventana.setLayout(new BorderLayout());
+
+        // Crear y configurar los botones
+        JButton botonMedico = new JButton("Médico");
+        JButton botonReservas = new JButton("Reservas");
+        JButton botonCerrar = new JButton("Cerrar");
+
+        // Configurar acciones para los botones
+        botonMedico.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // Lógica para abrir la interfaz de carga de datos médicos
+                abrirInterfazMedico();
+            }
+        });
+          botonReservas.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // Lógica para abrir la interfaz de mostrar reservas
+                abrirInterfazReservas();
+            }
+        });
+
+        botonCerrar.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // Lógica para cerrar la aplicación
+                cerrarAplicacion();
+            }
+        });
+
+        // Crear panel para los botones
+        JPanel panelBotones = new JPanel();
+        panelBotones.setLayout(new GridLayout(3, 1));
+        panelBotones.add(botonMedico);
+        panelBotones.add(botonReservas);
+        panelBotones.add(botonCerrar);
+
+        // Agregar panel de botones a la ventana
+        ventana.add(panelBotones, BorderLayout.CENTER);
+
+        // Centrar la ventana en la pantalla
+        ventana.setLocationRelativeTo(null);
+
+        // Hacer visible la ventana
+        ventana.setVisible(true);
+    }
+
+    private static void abrirInterfazMedico() {
+        // Lógica para abrir la interfaz de carga de datos médicos
+        // Implementar según tus necesidades
+        JOptionPane.showMessageDialog(null, "Abriendo interfaz de carga de datos médicos");
+    }
+
+    private static void abrirInterfazReservas() {
+        // Lógica para abrir la interfaz de mostrar reservas
+        // Implementar según tus necesidades
+        JOptionPane.showMessageDialog(null, "Abriendo interfaz de mostrar reservas");
+    }
+
+    private static void cerrarAplicacion() {
+        // Lógica para cerrar la aplicación
+        int respuesta = JOptionPane.showConfirmDialog(null, "¿Estás seguro de que quieres cerrar la aplicación?", "Cerrar aplicación", JOptionPane.YES_NO_OPTION);
+        if (respuesta == JOptionPane.YES_OPTION) {
+            System.exit(0);
+        }
+    }
+
+    void setVisible(boolean b) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+    }
+-------------------------------------------------
+------------------------------------------------
+----------------------------------------------------------------------------------------------------------
+2-
+
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+public class InterfazMedico extends JFrame {
+
+    private static String[] datosMedico = new String[3];
+
+    private JTextField campoNombre;
+    private JTextField campoEspecialidad;
+    private JTextField campoHorario;
+    private JTextField campoValorHora;
+
+     public InterfazMedico() {
+        setTitle("Interfaz Médico");
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setSize(400, 300);
+        setLayout(new GridLayout(4, 2));
+
+        campoNombre = new JTextField();
+        campoEspecialidad = new JTextField();
+        campoHorario = new JTextField();
+        campoValorHora = new JTextField();
+
+        JLabel etiquetaNombre = new JLabel("Nombre:");
+        JLabel etiquetaEspecialidad = new JLabel("Especialidad:");
+        JLabel etiquetaHorario = new JLabel("Horario:");
+        JLabel etiquetaValorHora = new JLabel("Valor por Hora:");
+
+        JButton botonAceptar = new JButton("Aceptar");
+
+        botonAceptar.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String nombre = campoNombre.getText();
+                String especialidad = campoEspecialidad.getText();
+                String horario = campoHorario.getText();
+                 String valorHora = campoValorHora.getText();
+
+                datosMedico[0] = nombre;
+                datosMedico[1] = especialidad;
+                datosMedico[2] = horario;
+                datosMedico[3] = valorHora;
+                mostrarMensajeDatosGuardados();
+                // Llamar a un método para enviar datos a la interfaz de reservas
+                enviarDatosAInterfazReservas();
+            }
+        });
+
+        add(etiquetaNombre);
+        add(campoNombre);
+        add(etiquetaEspecialidad);
+        add(campoEspecialidad);
+        add(etiquetaHorario);
+        add(campoHorario);
+        add(botonAceptar);
+
+        setLocationRelativeTo(null);
+    }
+
+    private void mostrarMensajeDatosGuardados() {
+        JOptionPane.showMessageDialog(this, "Datos guardados:\nNombre: " + datosMedico[0] +
+                "\nEspecialidad: " + datosMedico[1] + "\nHorario: " + datosMedico[2]);
+    }
+
+    private void enviarDatosAInterfazReservas() {
+        // Lógica para enviar datos a la interfaz de reservas
+        // Puedes crear una instancia de la interfaz de reservas y pasarle los datos
+        InterfazReservas interfazReservas = new InterfazReservas(datosMedico);
+        interfazReservas.setVisible(true);
+        // También podrías cerrar la interfaz del médico si es necesario
+        dispose();
+    }
+
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                InterfazMedico interfazMedico = new InterfazMedico();
+                interfazMedico.setVisible(true);
+            }
+        });
+    }
+}
+------------------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------------------------
+3-
+
+import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+public class InterfazReservas extends JFrame {
+
+    private JTable tablaReservas;
+    private DefaultTableModel modeloTabla;
+
+    public InterfazReservas(String[] datosMedico) {
+        // Configuración de la ventana
+        setTitle("Reservas Médicas");
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE); // No cierra la aplicación completa, solo la ventana
+        setSize(600, 400);
+
+        // Crear un modelo de tabla
+        modeloTabla = new DefaultTableModel();
+        modeloTabla.addColumn("Nombre");
+        modeloTabla.addColumn("Especialidad");
+        modeloTabla.addColumn("Horario");
+
+        // Crear la tabla con el modelo
+        tablaReservas = new JTable(modeloTabla);
+
+        // Configurar un scroll pane para la tabla
+        JScrollPane scrollPane = new JScrollPane(tablaReservas);
+
+        // Crear botón de cerrar
+        JButton botonCerrar = new JButton("Cerrar");
+
+        // Configurar acción para el botón Cerrar
+        botonCerrar.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                cerrarVentana();
+            }
+        });
+
+        // Agregar componentes a la ventana
+        add(scrollPane, BorderLayout.CENTER);
+        add(botonCerrar, BorderLayout.SOUTH);
+
+        // Centrar la ventana en la pantalla
+        setLocationRelativeTo(null);
+    }
+
+    // Método para recibir y mostrar los datos desde la interfaz del médico
+    public void mostrarDatosMedico(String[] datosMedico) {
+        modeloTabla.addRow(datosMedico);
+    }
+
+    private void cerrarVentana() {
+        // Cerrar la ventana y mostrar la interfaz inicial
+        InterfazInicio interfazInicio = new InterfazInicio();
+        interfazInicio.setVisible(true);
+        dispose(); // Cierra solo la ventana actual
+    }
+
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                String[] datosMedico = null;
+                InterfazReservas interfazReservas = new InterfazReservas(datosMedico);
+                interfazReservas.setVisible(true);
+            }
+        });
+    }
+}
